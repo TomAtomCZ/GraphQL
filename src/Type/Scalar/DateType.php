@@ -16,36 +16,16 @@ use DateTime;
  * Class DateType
  * @package Youshido\GraphQL\Type\Scalar
  */
-class DateType extends AbstractScalarType
+class DateType extends DateTimeType
 {
+    public function __construct()
+    {
+        parent::__construct('Y-m-d');
+    }
 
     public function getName(): string
     {
         return 'Date';
-    }
-
-    /**
-     * @param $value DateTime
-     * @return null|string
-     */
-    public function serialize($value): mixed
-    {
-        if ($value === null) {
-            return null;
-        }
-
-        return $value->format('Y-m-d');
-    }
-
-    public function isValidValue(mixed $value): bool
-    {
-        if (is_null($value) || is_object($value)) {
-            return true;
-        }
-
-        $d = DateTime::createFromFormat('Y-m-d', $value);
-
-        return $d && $d->format('Y-m-d') == $value;
     }
 
     public function getDescription(): string

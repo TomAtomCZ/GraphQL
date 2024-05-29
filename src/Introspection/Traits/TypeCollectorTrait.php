@@ -8,7 +8,7 @@
 namespace Youshido\GraphQL\Introspection\Traits;
 
 use Youshido\GraphQL\Type\AbstractType;
-use Youshido\GraphQL\Type\InputObject\InputObjectType;
+use Youshido\GraphQL\Type\InputObject\AbstractInputObjectType;
 use Youshido\GraphQL\Type\InterfaceType\AbstractInterfaceType;
 use Youshido\GraphQL\Type\Object\AbstractObjectType;
 use Youshido\GraphQL\Type\TypeMap;
@@ -73,10 +73,10 @@ trait TypeCollectorTrait
     }
 
     /**
-     * @param AbstractObjectType|InputObjectType $type
+     * @param AbstractObjectType|AbstractInputObjectType $type
      * @return void
      */
-    private function collectFieldsArgsTypes(AbstractObjectType|InputObjectType $type): void
+    private function collectFieldsArgsTypes(AbstractObjectType|AbstractInputObjectType $type): void
     {
         foreach ($type->getConfig()->getFields() as $field) {
             $arguments = $field->getConfig()->getArguments();

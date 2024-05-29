@@ -14,7 +14,7 @@ use Youshido\GraphQL\Config\Traits\ConfigAwareTrait;
 use Youshido\GraphQL\Exception\ConfigurationException;
 use Youshido\GraphQL\Type\AbstractInterfaceTypeInterface;
 use Youshido\GraphQL\Type\AbstractType;
-use Youshido\GraphQL\Type\InputObject\InputObjectType;
+use Youshido\GraphQL\Type\InputObject\AbstractInputObjectType;
 use Youshido\GraphQL\Type\InterfaceType\AbstractInterfaceType;
 use Youshido\GraphQL\Type\NonNullType;
 use Youshido\GraphQL\Type\Object\AbstractObjectType;

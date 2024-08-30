@@ -12,9 +12,11 @@ use Traversable;
 use Youshido\GraphQL\Config\Object\ListTypeConfig;
 use Youshido\GraphQL\Config\Object\ObjectTypeConfig;
 use Youshido\GraphQL\Exception\ConfigurationException;
-use Youshido\GraphQL\Exception\ValidationException;
+use Youshido\GraphQL\Type\AbstractType;
 use Youshido\GraphQL\Type\CompositeTypeInterface;
+use Youshido\GraphQL\Type\Enum\AbstractEnumType;
 use Youshido\GraphQL\Type\InputObject\InputObjectType;
+use Youshido\GraphQL\Type\InterfaceType\AbstractInterfaceType;
 use Youshido\GraphQL\Type\NonNullType;
 use Youshido\GraphQL\Type\Object\AbstractObjectType;
 use Youshido\GraphQL\Type\Scalar\AbstractScalarType;
@@ -36,7 +38,7 @@ abstract class AbstractListType extends AbstractObjectType implements CompositeT
         $this->config = new ListTypeConfig(['itemType' => $this->getItemType()], $this);
     }
 
-    abstract public function getItemType(): NonNullType|AbstractObjectType|AbstractScalarType|InputObjectType|null;
+    abstract public function getItemType(): NonNullType|AbstractObjectType|AbstractInterfaceType|AbstractScalarType|AbstractEnumType|InputObjectType|null;
 
     /**
      * @param mixed $value
@@ -55,10 +57,9 @@ abstract class AbstractListType extends AbstractObjectType implements CompositeT
     /**
      * @param $value
      * @param bool $returnValue
-     *
-     * @return bool|array|string
+     * @return mixed - true/false or type of the returned value if $returnValue is true
      */
-    protected function validList($value, bool $returnValue = false): bool|array|string
+    protected function validList($value, bool $returnValue = false): mixed
     {
         $itemType = $this->config->get('itemType');
 
@@ -89,7 +90,7 @@ abstract class AbstractListType extends AbstractObjectType implements CompositeT
         return true;
     }
 
-    public function getNamedType(): NonNullType|AbstractObjectType|AbstractScalarType|InputObjectType|null|static
+    public function getNamedType(): NonNullType|AbstractObjectType|AbstractScalarType|AbstractInterfaceType|AbstractEnumType|InputObjectType|null|static
     {
         return $this->getItemType();
     }
@@ -99,7 +100,7 @@ abstract class AbstractListType extends AbstractObjectType implements CompositeT
         return TypeMap::KIND_LIST;
     }
 
-    public function getTypeOf(): \Youshido\GraphQL\Type\AbstractType
+    public function getTypeOf(): AbstractType
     {
         return $this->getNamedType();
     }

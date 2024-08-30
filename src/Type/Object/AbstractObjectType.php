@@ -13,6 +13,7 @@ use InvalidArgumentException;
 use Youshido\GraphQL\Config\Object\ObjectTypeConfig;
 use Youshido\GraphQL\Exception\ConfigurationException;
 use Youshido\GraphQL\Type\AbstractType;
+use Youshido\GraphQL\Type\InputObject\AbstractInputObjectType;
 use Youshido\GraphQL\Type\Enum\AbstractEnumType;
 use Youshido\GraphQL\Type\InputObject\InputObjectType;
 use Youshido\GraphQL\Type\InterfaceType\AbstractInterfaceType;
@@ -68,12 +69,12 @@ abstract class AbstractObjectType extends AbstractType
         return TypeMap::KIND_OBJECT;
     }
 
-    public function getType(): NonNullType|AbstractObjectType|AbstractScalarType|AbstractInterfaceType|AbstractEnumType|InputObjectType|null|static
+    public function getType(): NonNullType|AbstractObjectType|AbstractScalarType|AbstractInterfaceType|AbstractEnumType|AbstractInputObjectType|null|static
     {
         return $this->getConfigValue('type', $this);
     }
 
-    public function getNamedType(): NonNullType|AbstractObjectType|AbstractScalarType|AbstractInterfaceType|AbstractEnumType|InputObjectType|null|static
+    public function getNamedType(): NonNullType|AbstractObjectType|AbstractScalarType|AbstractInterfaceType|AbstractEnumType|AbstractInputObjectType|null|static
     {
         return $this;
     }

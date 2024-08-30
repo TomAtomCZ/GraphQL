@@ -15,7 +15,7 @@ use Youshido\GraphQL\Exception\ConfigurationException;
 use Youshido\GraphQL\Type\AbstractType;
 use Youshido\GraphQL\Type\CompositeTypeInterface;
 use Youshido\GraphQL\Type\Enum\AbstractEnumType;
-use Youshido\GraphQL\Type\InputObject\InputObjectType;
+use Youshido\GraphQL\Type\InputObject\AbstractInputObjectType;
 use Youshido\GraphQL\Type\InterfaceType\AbstractInterfaceType;
 use Youshido\GraphQL\Type\NonNullType;
 use Youshido\GraphQL\Type\Object\AbstractObjectType;
@@ -24,10 +24,7 @@ use Youshido\GraphQL\Type\TypeMap;
 
 abstract class AbstractListType extends AbstractObjectType implements CompositeTypeInterface
 {
-    /**
-     * @var ListTypeConfig
-     */
-    protected $config;
+    protected ListTypeConfig $config;
 
     /**
      * @throws ConfigurationException
@@ -38,7 +35,7 @@ abstract class AbstractListType extends AbstractObjectType implements CompositeT
         $this->config = new ListTypeConfig(['itemType' => $this->getItemType()], $this);
     }
 
-    abstract public function getItemType(): NonNullType|AbstractObjectType|AbstractInterfaceType|AbstractScalarType|AbstractEnumType|InputObjectType|null;
+    abstract public function getItemType(): NonNullType|AbstractObjectType|AbstractScalarType|AbstractEnumType|AbstractInputObjectType|AbstractInterfaceType|null;
 
     /**
      * @param mixed $value
@@ -90,7 +87,7 @@ abstract class AbstractListType extends AbstractObjectType implements CompositeT
         return true;
     }
 
-    public function getNamedType(): NonNullType|AbstractObjectType|AbstractScalarType|AbstractInterfaceType|AbstractEnumType|InputObjectType|null|static
+    public function getNamedType(): NonNullType|AbstractObjectType|AbstractScalarType|AbstractInputObjectType|AbstractInterfaceType|null|static
     {
         return $this->getItemType();
     }

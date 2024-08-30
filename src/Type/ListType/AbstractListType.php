@@ -24,7 +24,7 @@ use Youshido\GraphQL\Type\TypeMap;
 
 abstract class AbstractListType extends AbstractObjectType implements CompositeTypeInterface
 {
-    protected ListTypeConfig $config;
+    protected $config;
 
     /**
      * @throws ConfigurationException

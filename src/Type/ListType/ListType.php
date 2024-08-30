@@ -11,9 +11,8 @@ namespace Youshido\GraphQL\Type\ListType;
 
 use Youshido\GraphQL\Config\Object\ListTypeConfig;
 use Youshido\GraphQL\Type\Enum\AbstractEnumType;
-use Youshido\GraphQL\Type\InputObject\InputObjectType;
-use Youshido\GraphQL\Type\InterfaceType\AbstractInterfaceType;
 use Youshido\GraphQL\Type\InputObject\AbstractInputObjectType;
+use Youshido\GraphQL\Type\InterfaceType\AbstractInterfaceType;
 use Youshido\GraphQL\Type\NonNullType;
 use Youshido\GraphQL\Type\Object\AbstractObjectType;
 use Youshido\GraphQL\Type\Scalar\AbstractScalarType;

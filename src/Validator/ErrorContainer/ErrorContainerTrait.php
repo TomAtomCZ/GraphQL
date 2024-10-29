@@ -13,13 +13,14 @@ use Youshido\GraphQL\Exception\Interfaces\LocationableExceptionInterface;
 
 trait ErrorContainerTrait
 {
-
     /** @var Exception[] */
-    protected $errors = [];
+    protected array $errors = [];
 
-    public function addError(Exception $exception)
+    public function addError(Exception $exception): static
     {
-        $this->errors[] = $exception;
+        if (!$this->hasError($exception)) {
+            $this->errors[] = $exception;
+        }
 
         return $this;
     }
@@ -29,12 +30,17 @@ trait ErrorContainerTrait
         return !empty($this->errors);
     }
 
-    public function getErrors()
+    public function hasError(Exception $exception): bool
+    {
+        return $this->hasErrors() && in_array($exception, $this->errors);
+    }
+
+    public function getErrors(): array
     {
         return $this->errors;
     }
 
-    public function mergeErrors(ErrorContainerInterface $errorContainer)
+    public function mergeErrors(ErrorContainerInterface $errorContainer): static
     {
         if ($errorContainer->hasErrors()) {
             foreach ($errorContainer->getErrors() as $error) {
@@ -46,9 +52,10 @@ trait ErrorContainerTrait
     }
 
     /**
-     * @return mixed[]
+     * @param bool $inGraphQLStyle
+     * @return array
      */
-    public function getErrorsArray($inGraphQLStyle = true): array
+    public function getErrorsArray(bool $inGraphQLStyle = true): array
     {
         $errors = [];
 
@@ -83,11 +90,10 @@ trait ErrorContainerTrait
         return $errors;
     }
 
-    public function clearErrors()
+    public function clearErrors(): static
     {
         $this->errors = [];
 
         return $this;
     }
-
 }

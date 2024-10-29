@@ -19,6 +19,8 @@ interface ErrorContainerInterface
 
     public function hasErrors();
 
+    public function hasError(Exception $exception);
+
     public function getErrors();
 
     public function getErrorsArray();

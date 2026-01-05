@@ -98,7 +98,7 @@ class QueryType extends AbstractObjectType
         }
 
         /** @var AbstractObjectType $value */
-        return array_filter($value->getConfig()->getFields(), static function (Field $field) use ($args): bool {
+        return array_filter($value->getConfig()->getFields(), static function ($field) use ($args): bool {
             /** @var $field Field */
             return !in_array($field->getName(), ['__type', '__schema']) && !(!$args['includeDeprecated'] && $field->isDeprecated());
         });

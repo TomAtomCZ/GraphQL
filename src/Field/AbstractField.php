@@ -25,7 +25,7 @@ abstract class AbstractField implements FieldInterface
 
     protected bool $isFinal = false;
 
-    private mixed $nameCache;
+    private mixed $nameCache = null;
 
     /**
      * @throws ConfigurationException
@@ -44,7 +44,9 @@ abstract class AbstractField implements FieldInterface
             $config['type'] = TypeFactory::getScalarType($config['type']);
         }
 
-        $this->nameCache = $config['name'] ?? $this->getAutoName();
+        if (!$this->nameCache) {
+            $this->nameCache = $config['name'] ?? $this->getAutoName();
+        }
 
         $this->config = new FieldConfig($config, $this, $this->isFinal);
         $this->build($this->config);

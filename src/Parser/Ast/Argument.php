@@ -12,14 +12,10 @@ use Youshido\GraphQL\Parser\Location;
 
 class Argument extends AbstractAst implements ValueInterface
 {
-    /**
-     * @var string
-     */
     private string $name;
 
     /**
      * TODO - Was ValueInterface - is there any reason for that?
-     * @var mixed
      */
     private mixed $value;
 
@@ -34,33 +30,21 @@ class Argument extends AbstractAst implements ValueInterface
         $this->value = $value;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     */
     public function setName(string $name): void
     {
         $this->name = $name;
     }
 
-    /**
-     * @return mixed
-     */
     public function getValue(): mixed
     {
         return $this->value;
     }
 
-    /**
-     * @param mixed $value
-     */
     public function setValue(mixed $value): void
     {
         $this->value = $value;

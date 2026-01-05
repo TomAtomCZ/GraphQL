@@ -46,9 +46,6 @@ abstract class AbstractInputField implements InputFieldInterface
 
     }
 
-    /**
-     * @return mixed
-     */
     abstract public function getType(): mixed;
 
     public function getDefaultValue()

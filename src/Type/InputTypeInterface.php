@@ -30,7 +30,6 @@ interface InputTypeInterface
      * Coercing value received as input to current type
      *
      * @param $value
-     * @return mixed
      */
     public function parseValue($value): mixed;
 
@@ -38,14 +37,11 @@ interface InputTypeInterface
      * Coercing result to current type
      *
      * @param $value
-     * @return mixed
      */
     public function serialize($value): mixed;
 
     /**
      * @param $value mixed
-     *
-     * @return bool
      */
     public function isValidValue(mixed $value): bool;
 

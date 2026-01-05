@@ -9,6 +9,7 @@ namespace Youshido\GraphQL\Introspection;
 
 
 use Youshido\GraphQL\Config\Object\ObjectTypeConfig;
+use Youshido\GraphQL\Exception\ConfigurationException;
 use Youshido\GraphQL\Type\NonNullType;
 use Youshido\GraphQL\Type\Object\AbstractObjectType;
 use Youshido\GraphQL\Type\TypeMap;
@@ -16,6 +17,9 @@ use Youshido\GraphQL\Type\TypeMap;
 class EnumValueType extends AbstractObjectType
 {
 
+    /**
+     * @throws ConfigurationException
+     */
     public function build(ObjectTypeConfig $config): void
     {
         $config

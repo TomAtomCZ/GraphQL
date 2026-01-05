@@ -91,7 +91,7 @@ class ResolveValidator implements ResolveValidatorInterface
             }
         }
 
-        if (!empty($requiredArguments)) {
+        if ($requiredArguments !== []) {
             throw new ResolveException(sprintf('Require "%s" arguments to query "%s"', implode(', ', array_keys($requiredArguments)), $query->getName()));
         }
     }

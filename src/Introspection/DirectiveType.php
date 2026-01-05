@@ -35,11 +35,6 @@ class DirectiveType extends AbstractObjectType
         return [];
     }
 
-    /**
-     * @param DirectiveInterface $value
-     *
-     * @return mixed
-     */
     public function resolveLocations(DirectiveInterface $value): mixed
     {
         /** @var DirectiveConfig $directiveConfig */
@@ -58,15 +53,11 @@ class DirectiveType extends AbstractObjectType
             ->addField('description', TypeMap::TYPE_STRING)
             ->addField('args', [
                 'type' => new NonNullType(new ListType(new NonNullType(new InputValueType()))),
-                'resolve' => function (DirectiveInterface $value) {
-                    return $this->resolveArgs($value);
-                },
+                'resolve' => $this->resolveArgs(...),
             ])
             ->addField('locations', [
                 'type' => new NonNullType(new ListType(new NonNullType(new DirectiveLocationType()))),
-                'resolve' => function (DirectiveInterface $value) {
-                    return $this->resolveLocations($value);
-                },
+                'resolve' => $this->resolveLocations(...),
             ]);
     }
 }

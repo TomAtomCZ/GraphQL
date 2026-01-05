@@ -26,7 +26,7 @@ class IntType extends AbstractScalarType
         } else {
             $value = (int)$value;
 
-            return $value != 0 ? $value : null;
+            return $value !== 0 ? $value : null;
         }
     }
 

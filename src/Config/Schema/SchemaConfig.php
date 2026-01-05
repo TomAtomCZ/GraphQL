@@ -26,7 +26,7 @@ class SchemaConfig extends AbstractConfig
      */
     private readonly SchemaDirectivesList $directiveList;
 
-    public function __construct(array $configData, $contextObject = null, $finalClass = false)
+    public function __construct(array $configData, mixed $contextObject = null, bool $finalClass = false)
     {
         $this->typesList = new SchemaTypesList();
         $this->directiveList = new SchemaDirectivesList();
@@ -79,7 +79,7 @@ class SchemaConfig extends AbstractConfig
     /**
      * @return ObjectType
      */
-    public function getMutation()
+    public function getMutation(): mixed
     {
         return $this->get('mutation');
     }
@@ -94,17 +94,17 @@ class SchemaConfig extends AbstractConfig
         return $this;
     }
 
-    public function getName()
+    public function getName(): mixed
     {
         return $this->get('name', 'RootSchema');
     }
 
-    public function getTypesList()
+    public function getTypesList(): SchemaTypesList
     {
         return $this->typesList;
     }
 
-    public function getDirectiveList()
+    public function getDirectiveList(): SchemaDirectivesList
     {
         return $this->directiveList;
     }

@@ -30,6 +30,7 @@ class Tokenizer
 
     /**
      * @return Token
+     * @throws SyntaxErrorException
      */
     protected function next()
     {
@@ -42,7 +43,7 @@ class Tokenizer
     {
         while ($this->pos < strlen((string)$this->source)) {
             $ch = $this->source[$this->pos];
-            if ($ch === ' ' || $ch === "\t" || $ch === ',') {
+            if (in_array($ch, [' ', "\t", ','], true)) {
                 ++$this->pos;
             } elseif ($ch === '#') {
                 ++$this->pos;
@@ -178,7 +179,7 @@ class Tokenizer
         return false;
     }
 
-    protected function scanWord()
+    protected function scanWord(): Token
     {
         $start = $this->pos;
         ++$this->pos;
@@ -198,34 +199,24 @@ class Tokenizer
         return new Token($this->getKeyword($value), $this->getLine(), $this->getColumn(), $value);
     }
 
-    protected function getKeyword($name)
+    protected function getKeyword($name): string
     {
-        switch ($name) {
-            case 'null':
-                return Token::TYPE_NULL;
+        return match ($name) {
+            'null' => Token::TYPE_NULL,
+            'true' => Token::TYPE_TRUE,
+            'false' => Token::TYPE_FALSE,
+            'query' => Token::TYPE_QUERY,
+            'fragment' => Token::TYPE_FRAGMENT,
+            'mutation' => Token::TYPE_MUTATION,
+            'on' => Token::TYPE_ON,
+            default => Token::TYPE_IDENTIFIER,
+        };
 
-            case 'true':
-                return Token::TYPE_TRUE;
-
-            case 'false':
-                return Token::TYPE_FALSE;
-
-            case 'query':
-                return Token::TYPE_QUERY;
-
-            case 'fragment':
-                return Token::TYPE_FRAGMENT;
-
-            case 'mutation':
-                return Token::TYPE_MUTATION;
-
-            case 'on':
-                return Token::TYPE_ON;
-        }
-
-        return Token::TYPE_IDENTIFIER;
     }
 
+    /**
+     * @throws SyntaxErrorException
+     */
     protected function expect($type)
     {
         if ($this->match($type)) {
@@ -240,7 +231,7 @@ class Tokenizer
         return $this->peek()->getType() === $type;
     }
 
-    protected function scanNumber()
+    protected function scanNumber(): Token
     {
         $start = $this->pos;
         if ($this->source[$this->pos] === '-') {
@@ -256,7 +247,7 @@ class Tokenizer
 
         $value = substr((string)$this->source, $start, $this->pos - $start);
 
-        $value = strpos($value, '.') === false ? (int)$value : (float)$value;
+        $value = !str_contains($value, '.') ? (int)$value : (float)$value;
 
         return new Token(Token::TYPE_NUMBER, $this->getLine(), $this->getColumn(), $value);
     }
@@ -273,17 +264,17 @@ class Tokenizer
         }
     }
 
-    protected function createException($message)
+    protected function createException(string $message): SyntaxErrorException
     {
-        return new SyntaxErrorException(sprintf('%s', $message), $this->getLocation());
+        return new SyntaxErrorException($message, $this->getLocation());
     }
 
-    protected function getLocation()
+    protected function getLocation(): Location
     {
         return new Location($this->getLine(), $this->getColumn());
     }
 
-    protected function getColumn()
+    protected function getColumn(): int|float
     {
         return $this->pos - $this->lineStart;
     }
@@ -296,6 +287,9 @@ class Tokenizer
     /*
   		http://facebook.github.io/graphql/October2016/#sec-String-Value
     */
+    /**
+     * @throws SyntaxErrorException
+     */
     protected function scanString()
     {
         $len = strlen((string)$this->source);
@@ -376,7 +370,7 @@ class Tokenizer
         return $this->createUnexpectedTokenTypeException($token->getType());
     }
 
-    protected function createUnexpectedTokenTypeException($tokenType)
+    protected function createUnexpectedTokenTypeException(string $tokenType)
     {
         return $this->createException(sprintf('Unexpected token "%s"', Token::tokenName($tokenType)));
     }

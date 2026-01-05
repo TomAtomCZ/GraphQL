@@ -14,8 +14,10 @@ use Youshido\GraphQL\Type\TypeService;
 
 trait ResolvableObjectTrait
 {
-
-    public function resolve($value, array $args, ResolveInfo $info)
+    /**
+     * @throws Exception
+     */
+    public function resolve($value, array $args, ResolveInfo $info): mixed
     {
         if ($resolveFunction = $this->getConfig()->getResolveFunction()) {
             return $resolveFunction($value, $args, $info);
@@ -31,7 +33,7 @@ trait ResolvableObjectTrait
     }
 
 
-    public function getResolveFunction()
+    public function getResolveFunction(): ?callable
     {
         return $this->getConfig()->getResolveFunction();
     }

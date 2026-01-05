@@ -35,7 +35,7 @@ class VariableReference extends AbstractAst implements ValueInterface
         $this->variable = $variable;
     }
 
-    public function getVariable()
+    public function getVariable(): ?Variable
     {
         return $this->variable;
     }

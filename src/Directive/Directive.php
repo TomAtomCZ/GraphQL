@@ -8,6 +8,7 @@
 namespace Youshido\GraphQL\Directive;
 
 use Youshido\GraphQL\Config\Directive\DirectiveConfig;
+use Youshido\GraphQL\Exception\ConfigurationException;
 use Youshido\GraphQL\Type\Traits\ArgumentsAwareObjectTrait;
 use Youshido\GraphQL\Type\Traits\AutoNameTrait;
 
@@ -19,6 +20,9 @@ class Directive implements DirectiveInterface
 
     protected $isFinal = false;
 
+    /**
+     * @throws ConfigurationException
+     */
     public function __construct(array $config = [])
     {
         if (empty($config['name'])) {

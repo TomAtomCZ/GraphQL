@@ -18,9 +18,6 @@ use Youshido\GraphQL\Validator\ConfigValidator\ConfigValidator;
 class SchemaValidator
 {
 
-    /** @var ConfigValidator */
-    private $configValidator;
-
     /**
      * @throws ConfigurationException
      */
@@ -30,10 +27,11 @@ class SchemaValidator
             throw new ConfigurationException('Schema has to have fields');
         }
 
-        $this->configValidator = ConfigValidator::getInstance();
+        $configValidator = null;
+        $configValidator = ConfigValidator::getInstance();
 
         foreach ($schema->getQueryType()->getConfig()->getFields() as $field) {
-            $this->configValidator->assertValidConfig($field->getConfig());
+            $configValidator->assertValidConfig($field->getConfig());
 
             if ($field->getType() instanceof AbstractObjectType) {
                 $this->assertInterfaceImplementationCorrect($field->getType());

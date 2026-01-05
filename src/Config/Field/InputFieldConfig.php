@@ -32,7 +32,7 @@ class InputFieldConfig extends AbstractConfig
         ];
     }
 
-    public function getDefaultValue()
+    public function getDefaultValue(): mixed
     {
         return $this->get('defaultValue');
     }

@@ -9,6 +9,7 @@
 namespace Youshido\GraphQL\Config\Traits;
 
 
+use Youshido\GraphQL\Exception\ConfigurationException;
 use Youshido\GraphQL\Field\InputField;
 
 trait ArgumentsAwareConfigTrait
@@ -43,6 +44,9 @@ trait ArgumentsAwareConfigTrait
         return $this;
     }
 
+    /**
+     * @throws ConfigurationException
+     */
     public function addArgument($argument, $argumentInfo = null): static
     {
         if (!($argument instanceof InputField)) {
@@ -72,8 +76,6 @@ trait ArgumentsAwareConfigTrait
 
     /**
      * @param $name
-     *
-     * @return InputField|null
      */
     public function getArgument($name): ?InputField
     {
@@ -82,7 +84,6 @@ trait ArgumentsAwareConfigTrait
 
     /**
      * @param $name
-     * @return bool
      */
     public function hasArgument($name): bool
     {

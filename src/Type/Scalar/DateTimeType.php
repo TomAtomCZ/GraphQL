@@ -28,7 +28,7 @@ class DateTimeType extends AbstractScalarType
 
     public function isValidValue(mixed $value): bool
     {
-        if ((is_object($value) && $value instanceof DateTimeInterface) || is_null($value)) {
+        if (($value instanceof DateTimeInterface) || is_null($value)) {
             return true;
         } elseif (is_string($value)) {
             $date = $this->createFromFormat($value);

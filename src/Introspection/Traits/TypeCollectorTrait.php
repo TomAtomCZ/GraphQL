@@ -20,7 +20,9 @@ trait TypeCollectorTrait
 
     protected function collectTypes(?AbstractType $type): void
     {
-        if (empty($type) || array_key_exists($type->getName(), $this->types)) return;
+        if (!$type instanceof AbstractType || array_key_exists($type->getName(), $this->types)) {
+            return;
+        }
 
         switch ($type->getKind()) {
             case TypeMap::KIND_INTERFACE:
@@ -29,7 +31,7 @@ trait TypeCollectorTrait
             case TypeMap::KIND_SCALAR:
                 $this->insertType($type->getName(), $type);
 
-                if ($type->getKind() == TypeMap::KIND_UNION) {
+                if ($type->getKind() === TypeMap::KIND_UNION) {
                     /** @var AbstractUnionType $type */
                     foreach ($type->getTypes() as $subType) {
                         $this->collectTypes($subType);
@@ -72,10 +74,6 @@ trait TypeCollectorTrait
         }
     }
 
-    /**
-     * @param AbstractObjectType|AbstractInputObjectType $type
-     * @return void
-     */
     private function collectFieldsArgsTypes(AbstractObjectType|AbstractInputObjectType $type): void
     {
         foreach ($type->getConfig()->getFields() as $field) {

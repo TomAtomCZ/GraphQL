@@ -28,7 +28,7 @@ class ResolveException extends Exception implements LocationableExceptionInterfa
     /**
      * @return Location
      */
-    public function getLocation()
+    public function getLocation(): ?Location
     {
         return $this->location;
     }

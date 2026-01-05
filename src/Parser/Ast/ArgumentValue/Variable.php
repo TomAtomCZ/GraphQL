@@ -113,42 +113,27 @@ class Variable extends AbstractAst implements ValueInterface
         $this->type = $type;
     }
 
-    /**
-     * @return boolean
-     */
-    public function isArray()
+    public function isArray(): bool
     {
         return $this->isArray;
     }
 
-    /**
-     * @param boolean $isArray
-     */
-    public function setIsArray($isArray): void
+    public function setIsArray(bool $isArray): void
     {
         $this->isArray = $isArray;
     }
 
-    /**
-     * @return boolean
-     */
-    public function isNullable()
+    public function isNullable(): bool
     {
         return $this->nullable;
     }
 
-    /**
-     * @param boolean $nullable
-     */
-    public function setNullable($nullable): void
+    public function setNullable(bool $nullable): void
     {
         $this->nullable = $nullable;
     }
 
-    /**
-     * @return bool
-     */
-    public function hasDefaultValue()
+    public function hasDefaultValue(): bool
     {
         return $this->hasDefaultValue;
     }
@@ -171,38 +156,27 @@ class Variable extends AbstractAst implements ValueInterface
         $this->defaultValue = $defaultValue;
     }
 
-    /**
-     * @return boolean
-     */
-    public function isUsed()
+    public function isUsed(): bool
     {
         return $this->used;
     }
 
     /**
-     * @param boolean $used
-     *
      * @return $this
      */
-    public function setUsed($used): static
+    public function setUsed(bool $used): static
     {
         $this->used = $used;
 
         return $this;
     }
 
-    /**
-     * @return bool
-     */
-    public function isArrayElementNullable()
+    public function isArrayElementNullable(): bool
     {
         return $this->arrayElementNullable;
     }
 
-    /**
-     * @param bool $arrayElementNullable
-     */
-    public function setArrayElementNullable($arrayElementNullable): void
+    public function setArrayElementNullable(bool $arrayElementNullable): void
     {
         $this->arrayElementNullable = $arrayElementNullable;
     }

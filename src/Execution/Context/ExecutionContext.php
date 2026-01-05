@@ -43,8 +43,6 @@ class ExecutionContext implements ExecutionContextInterface
     }
 
     /**
-     * @param AbstractObjectType $type
-     * @param string $fieldName
      * @return mixed - Field
      */
     public function getField(AbstractObjectType $type, string $fieldName): mixed
@@ -78,9 +76,6 @@ class ExecutionContext implements ExecutionContextInterface
         $this->schema->addQueryField(new TypeDefinitionField());
     }
 
-    /**
-     * @return AbstractSchema
-     */
     public function getSchema(): AbstractSchema
     {
         return $this->schema;
@@ -96,9 +91,6 @@ class ExecutionContext implements ExecutionContextInterface
         return $this;
     }
 
-    /**
-     * @return Request|null
-     */
     public function getRequest(): ?Request
     {
         return $this->request;
@@ -119,9 +111,6 @@ class ExecutionContext implements ExecutionContextInterface
         return $this->container->get($id);
     }
 
-    /**
-     * @return ContainerInterface|null
-     */
     public function getContainer(): ?ContainerInterface
     {
         return $this->container;

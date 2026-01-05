@@ -13,9 +13,6 @@ use Youshido\GraphQL\Type\AbstractType;
 
 interface InputFieldInterface
 {
-    /**
-     * @return mixed
-     */
     public function getType(): mixed;
 
     public function getName();
@@ -31,21 +28,10 @@ interface InputFieldInterface
      */
     public function getArguments(): array;
 
-    /**
-     * @param string $argumentName
-     */
     public function getArgument(string $argumentName);
 
-    /**
-     * @param string $argumentName
-     *
-     * @return bool
-     */
     public function hasArgument(string $argumentName): bool;
 
-    /**
-     * @return boolean
-     */
     public function hasArguments(): bool;
 
 

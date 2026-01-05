@@ -25,7 +25,7 @@ class DeferredResolver implements DeferredResolverInterface
         $this->resolver = $resolver;
     }
 
-    public function resolve()
+    public function resolve(): mixed
     {
         return call_user_func($this->resolver);
     }

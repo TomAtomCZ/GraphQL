@@ -8,6 +8,7 @@
 namespace Youshido\GraphQL\Introspection;
 
 use Youshido\GraphQL\Config\Object\ObjectTypeConfig;
+use Youshido\GraphQL\Exception\ConfigurationException;
 use Youshido\GraphQL\Field\Field;
 use Youshido\GraphQL\Introspection\Field\TypesField;
 use Youshido\GraphQL\Schema\AbstractSchema;
@@ -45,41 +46,35 @@ class SchemaType extends AbstractObjectType
     public function resolveDirectives($value)
     {
         /** @var AbstractSchema|Field $value */
-        $dirs = $value->getDirectiveList()->getDirectives();
-        return $dirs;
+        return $value->getDirectiveList()->getDirectives();
     }
 
+    /**
+     * @throws ConfigurationException
+     */
     public function build(ObjectTypeConfig $config): void
     {
         $config
             ->addField(new Field([
                 'name' => 'queryType',
                 'type' => new QueryType(),
-                'resolve' => function ($value) {
-                    return $this->resolveQueryType($value);
-                }
+                'resolve' => $this->resolveQueryType(...)
             ]))
             ->addField(new Field([
                 'name' => 'mutationType',
                 'type' => new QueryType(),
-                'resolve' => function ($value) {
-                    return $this->resolveMutationType($value);
-                }
+                'resolve' => $this->resolveMutationType(...)
             ]))
             ->addField(new Field([
                 'name' => 'subscriptionType',
                 'type' => new QueryType(),
-                'resolve' => function () {
-                    return $this->resolveSubscriptionType();
-                }
+                'resolve' => $this->resolveSubscriptionType(...)
             ]))
             ->addField(new TypesField())
             ->addField(new Field([
                 'name' => 'directives',
                 'type' => new ListType(new DirectiveType()),
-                'resolve' => function ($value) {
-                    return $this->resolveDirectives($value);
-                }
+                'resolve' => $this->resolveDirectives(...)
             ]));
     }
 }

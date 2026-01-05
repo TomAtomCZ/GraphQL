@@ -17,7 +17,6 @@ class SchemaTypesList
     private array $typesList = [];
 
     /**
-     * @param array $types
      * @return $this
      * @throws
      */
@@ -36,14 +35,15 @@ class SchemaTypesList
     }
 
     /**
-     * @param TypeInterface $type
      * @return $this
      * @throws Exception
      */
     public function addType(TypeInterface $type): static
     {
         $typeName = $this->getTypeName($type);
-        if ($this->isTypeNameRegistered($typeName)) return $this;
+        if ($this->isTypeNameRegistered($typeName)) {
+            return $this;
+        }
 
         $this->typesList[$typeName] = $type;
         return $this;
@@ -57,7 +57,7 @@ class SchemaTypesList
     /**
      * @throws Exception
      */
-    private function getTypeName(TypeInterface $type)
+    private function getTypeName(TypeInterface $type): ?string
     {
 
         if ($type instanceof AbstractType) {

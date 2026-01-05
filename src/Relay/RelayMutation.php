@@ -62,6 +62,7 @@ class RelayMutation
                 } elseif (is_array($resolveValue)) {
                     $resolveValue['clientMutationId'] = $args['input']['clientMutationId'];
                 }
+                
                 return $resolveValue;
             }
         ]);

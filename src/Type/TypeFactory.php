@@ -17,8 +17,6 @@ class TypeFactory
 
     /**
      *
-     * @param string $type
-     * @return AbstractScalarType|null
      * @throws ConfigurationException
      */
     public static function getScalarType(string $type): ?AbstractScalarType
@@ -27,13 +25,13 @@ class TypeFactory
             if (empty(self::$objectsHash[$type])) {
                 $name = ucfirst($type);
 
-                $name = $name == 'Datetime' ? 'DateTime' : $name;
-                $name = $name == 'Datetimetz' ? 'DateTimeTz' : $name;
+                $name = $name === 'Datetime' ? 'DateTime' : $name;
+                $name = $name === 'Datetimetz' ? 'DateTimeTz' : $name;
 
                 $className = 'Youshido\GraphQL\Type\Scalar\\' . $name . 'Type';
 
                 // Hotfix for our custom app - TODO - add via configuration
-                if ($name == 'DateTimeAsString' || $name == 'StringOrArray' || $name == 'Boolean' || $name == 'Float' || $name == 'Int') {
+                if (in_array($name, ['DateTimeAsString', 'StringOrArray', 'Boolean', 'Float', 'Int'])) {
                     $className = 'App\GraphQL\Schema\Type\Scalar\\' . $name . 'Type';
                     // Fallback to base scalar types if custom doesn't exist
                     if (!class_exists($className)) {

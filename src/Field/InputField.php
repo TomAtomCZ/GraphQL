@@ -14,9 +14,6 @@ final class InputField extends AbstractInputField
 
     protected bool $isFinal = false;
 
-    /**
-     * @return mixed
-     */
     public function getType(): mixed
     {
         return $this->getConfigValue('type');

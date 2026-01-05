@@ -31,15 +31,13 @@ abstract class AbstractConfig
     /**
      * TypeConfig constructor.
      *
-     * @param array $configData
      * @param mixed|null $contextObject
-     * @param bool $finalClass
      *
      * @throws ConfigurationException
      */
     public function __construct(array $configData, mixed $contextObject = null, bool $finalClass = false)
     {
-        if (empty($configData)) {
+        if ($configData === []) {
             throw new ConfigurationException('Config for Type should be an array');
         }
 
@@ -108,9 +106,6 @@ abstract class AbstractConfig
         return $this->extraFieldsAllowed;
     }
 
-    /**
-     * @return null|callable
-     */
     public function getResolveFunction(): ?callable
     {
         return $this->get('resolve');
@@ -122,7 +117,6 @@ abstract class AbstractConfig
 
     /**
      * @param      $key
-     * @param null $defaultValue
      *
      * @return mixed|null|callable
      */

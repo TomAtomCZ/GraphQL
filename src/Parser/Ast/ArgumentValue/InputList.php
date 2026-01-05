@@ -24,10 +24,7 @@ class InputList extends AbstractAst implements ValueInterface
         $this->list = $list;
     }
 
-    /**
-     * @return array
-     */
-    public function getValue()
+    public function getValue(): array
     {
         return $this->list;
     }

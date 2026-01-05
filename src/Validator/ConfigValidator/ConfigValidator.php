@@ -36,9 +36,6 @@ class ConfigValidator implements ConfigValidatorInterface
         $this->initializeRules();
     }
 
-    /**
-     * @return ConfigValidator
-     */
     public static function getInstance(): ConfigValidator
     {
         if (empty(self::$instance)) {
@@ -50,6 +47,9 @@ class ConfigValidator implements ConfigValidatorInterface
         return self::$instance;
     }
 
+    /**
+     * @throws ConfigurationException
+     */
     public function assertValidConfig(AbstractConfig $config): void
     {
         if (!$this->isValidConfig($config)) {
@@ -79,7 +79,9 @@ class ConfigValidator implements ConfigValidatorInterface
 
     public function validate($data, $rules = [], $extraFieldsAllowed = null): bool
     {
-        if ($extraFieldsAllowed !== null) $this->setExtraFieldsAllowed($extraFieldsAllowed);
+        if ($extraFieldsAllowed !== null) {
+            $this->setExtraFieldsAllowed($extraFieldsAllowed);
+        }
 
         $processedFields = [];
         foreach ($rules as $fieldName => $fieldRules) {
@@ -98,7 +100,9 @@ class ConfigValidator implements ConfigValidatorInterface
                 continue;
             }
 
-            if (!empty($fieldRules['final'])) unset($fieldRules['final']);
+            if (!empty($fieldRules['final'])) {
+                unset($fieldRules['final']);
+            }
 
             /** Validation of all other rules*/
             foreach ($fieldRules as $ruleName => $ruleInfo) {
@@ -141,9 +145,6 @@ class ConfigValidator implements ConfigValidatorInterface
     }
 
 
-    /**
-     * @return boolean
-     */
     public function isExtraFieldsAllowed(): bool
     {
         return $this->extraFieldsAllowed;

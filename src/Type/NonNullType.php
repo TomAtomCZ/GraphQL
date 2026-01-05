@@ -21,7 +21,6 @@ final class NonNullType extends AbstractType implements CompositeTypeInterface
     /**
      * NonNullType constructor.
      *
-     * @param string|AbstractType $fieldType
      *
      * @throws ConfigurationException
      */

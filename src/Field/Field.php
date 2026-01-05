@@ -15,15 +15,12 @@ namespace Youshido\GraphQL\Field;
 final class Field extends AbstractField
 {
 
-    protected $isFinal = true;
+    protected bool $isFinal = true;
 
     protected $_typeCache;
 
     protected $_nameCache;
 
-    /**
-     * @return mixed
-     */
     public function getType(): mixed
     {
         return $this->_typeCache ?: ($this->_typeCache = $this->getConfigValue('type'));

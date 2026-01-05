@@ -37,6 +37,9 @@ class Request
 
     private array $fragmentReferences = [];
 
+    /**
+     * @throws InvalidRequestException
+     */
     public function __construct(array $data = [], array $variables = [])
     {
         if (array_key_exists('queries', $data)) {
@@ -132,7 +135,7 @@ class Request
     /**
      * @return Query[]
      */
-    public function getQueries()
+    public function getQueries(): array
     {
         return $this->queries;
     }
@@ -140,7 +143,7 @@ class Request
     /**
      * @return Fragment[]
      */
-    public function getFragments()
+    public function getFragments(): array
     {
         return $this->fragments;
     }
@@ -152,8 +155,6 @@ class Request
 
     /**
      * @param $name
-     *
-     * @return null|Fragment
      */
     public function getFragment($name): ?Fragment
     {
@@ -169,7 +170,7 @@ class Request
     /**
      * @return Mutation[]
      */
-    public function getMutations()
+    public function getMutations(): array
     {
         return $this->mutations;
     }
@@ -211,12 +212,16 @@ class Request
         $this->variables = $variables;
         foreach ($this->variableReferences as $reference) {
             /** invalid request with no variable */
-            if (!$reference->getVariable()) continue;
+            if (!$reference->getVariable()) {
+                continue;
+            }
 
             $variableName = $reference->getVariable()->getName();
 
             /** no variable was set at the time */
-            if (!array_key_exists($variableName, $variables)) continue;
+            if (!array_key_exists($variableName, $variables)) {
+                continue;
+            }
 
             $reference->getVariable()->setValue($variables[$variableName]);
             $reference->setValue($variables[$variableName]);
@@ -238,15 +243,12 @@ class Request
     /**
      * @return array|Variable[]
      */
-    public function getQueryVariables()
+    public function getQueryVariables(): array
     {
         return $this->queryVariables;
     }
 
-    /**
-     * @param array $queryVariables
-     */
-    public function setQueryVariables($queryVariables): void
+    public function setQueryVariables(array $queryVariables): void
     {
         $this->queryVariables = $queryVariables;
     }
@@ -254,15 +256,12 @@ class Request
     /**
      * @return array|FragmentReference[]
      */
-    public function getFragmentReferences()
+    public function getFragmentReferences(): array
     {
         return $this->fragmentReferences;
     }
 
-    /**
-     * @param array $fragmentReferences
-     */
-    public function setFragmentReferences($fragmentReferences): void
+    public function setFragmentReferences(array $fragmentReferences): void
     {
         $this->fragmentReferences = $fragmentReferences;
     }
@@ -270,7 +269,7 @@ class Request
     /**
      * @return array|VariableReference[]
      */
-    public function getVariableReferences()
+    public function getVariableReferences(): array
     {
         return $this->variableReferences;
     }

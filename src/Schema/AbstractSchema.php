@@ -10,6 +10,7 @@ namespace Youshido\GraphQL\Schema;
 
 
 use Youshido\GraphQL\Config\Schema\SchemaConfig;
+use Youshido\GraphQL\Exception\ConfigurationException;
 use Youshido\GraphQL\Type\SchemaDirectivesList;
 use Youshido\GraphQL\Type\SchemaTypesList;
 
@@ -18,6 +19,9 @@ abstract class AbstractSchema
 
     protected SchemaConfig $config;
 
+    /**
+     * @throws ConfigurationException
+     */
     public function __construct(array $config = [])
     {
         if (!array_key_exists('query', $config)) {
@@ -39,11 +43,17 @@ abstract class AbstractSchema
 
     abstract public function build(SchemaConfig $config);
 
+    /**
+     * @throws ConfigurationException
+     */
     public function addQueryField($field, $fieldInfo = null): void
     {
         $this->getQueryType()->addField($field, $fieldInfo);
     }
 
+    /**
+     * @throws ConfigurationException
+     */
     public function addMutationField($field, $fieldInfo = null): void
     {
         $this->getMutationType()->addField($field, $fieldInfo);
@@ -79,6 +89,6 @@ abstract class AbstractSchema
     {
         $defaultName = 'RootSchema';
 
-        return isset($config["name"]) ? $config["name"] : $defaultName;
+        return $config["name"] ?? $defaultName;
     }
 }

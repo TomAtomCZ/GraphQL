@@ -33,7 +33,7 @@ trait ConfigAwareTrait
             return $this->configCache[$key];
         }
 
-        $this->configCache[$key] = !empty($this->config) ? $this->config->get($key, $defaultValue) : $defaultValue;
+        $this->configCache[$key] = empty($this->config) ? $defaultValue : $this->config->get($key, $defaultValue);
         return $this->configCache[$key];
     }
 

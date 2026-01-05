@@ -39,18 +39,12 @@ class ResolveInfo
         $this->executionContext = $executionContext;
     }
 
-    /**
-     * @return ExecutionContextInterface
-     */
-    public function getExecutionContext()
+    public function getExecutionContext(): ExecutionContextInterface
     {
         return $this->executionContext;
     }
 
-    /**
-     * @return FieldInterface
-     */
-    public function getField()
+    public function getField(): FieldInterface
     {
         return $this->field;
     }
@@ -76,7 +70,7 @@ class ResolveInfo
     /**
      * @return Field[]
      */
-    public function getFieldASTList()
+    public function getFieldASTList(): array
     {
         return $this->fieldASTList;
     }
@@ -84,7 +78,7 @@ class ResolveInfo
     /**
      * @return AbstractType
      */
-    public function getReturnType()
+    public function getReturnType(): mixed
     {
         return $this->field->getType();
     }

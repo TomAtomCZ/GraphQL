@@ -52,7 +52,7 @@ class MaxComplexityQueryVisitor extends AbstractQueryVisitor
         $cost = is_null($cost) ? $this->defaultScore : $cost;
         $this->memo += $cost;
 
-        if (!empty($this->maxScore) && $this->memo > $this->maxScore) {
+        if ($this->maxScore !== null && $this->maxScore !== 0 && $this->memo > $this->maxScore) {
             throw new Exception('query exceeded max allowed complexity of ' . $this->maxScore);
         }
 

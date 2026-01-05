@@ -14,7 +14,6 @@ class SchemaDirectivesList
     private array $directivesList = [];
 
     /**
-     * @param array $directives
      *
      * @return $this
      * @throws
@@ -34,7 +33,9 @@ class SchemaDirectivesList
     public function addDirective(DirectiveInterface $directive): static
     {
         $directiveName = $this->getDirectiveName($directive);
-        if ($this->isDirectiveNameRegistered($directiveName)) return $this;
+        if ($this->isDirectiveNameRegistered($directiveName)) {
+            return $this;
+        }
 
         $this->directivesList[$directiveName] = $directive;
 

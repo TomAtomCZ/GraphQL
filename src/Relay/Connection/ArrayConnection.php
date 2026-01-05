@@ -17,13 +17,12 @@ class ArrayConnection
             return null;
         }
 
-        $index = array_search($object, $data);
+        $index = array_search($object, $data, true);
         return $index === false ? null : self::keyToCursor($index);
     }
 
     /**
      * @param $offset int
-     * @return string
      * @deprecated
      *   Use keyToCursor instead.
      */
@@ -40,7 +39,6 @@ class ArrayConnection
     /**
      * @param $cursor string
      *
-     * @return int|string|null
      * @deprecated Use cursorToKey instead.
      */
     public static function cursorToOffset(string $cursor): int|string|null
@@ -50,17 +48,15 @@ class ArrayConnection
 
     /**
      * Converts a cursor to its array key.
-     *
-     * @param string|null $cursor
-     * @return string|null
      */
     public static function cursorToKey(?string $cursor): ?string
     {
         if ($cursor === null) {
             return null;
         }
+        $decoded = base64_decode($cursor);
 
-        if ($decoded = base64_decode($cursor)) {
+        if ($decoded !== '' && $decoded !== '0') {
             return substr($decoded, strlen(self::PREFIX));
         }
 
@@ -76,7 +72,6 @@ class ArrayConnection
      *   The default value, in case the cursor is not given.
      * @param array $array
      *   The array to use in counting the offset. If empty, assumed to be an indexed array.
-     * @return int|null
      */
     public static function cursorToOffsetWithDefault(mixed $cursor, mixed $default, array $array = []): ?int
     {
@@ -85,7 +80,7 @@ class ArrayConnection
         }
 
         $key = self::cursorToKey($cursor);
-        $offset = empty($array) ? $key : array_search($key, array_keys($array));
+        $offset = $array === [] ? $key : array_search($key, array_keys($array), true);
 
         return is_null($offset) ? $default : (int)$offset;
     }
@@ -124,8 +119,8 @@ class ArrayConnection
         $slice = array_slice($data, $arraySliceStart, $arraySliceEnd, true);
         $edges = array_map(['self', 'edgeForObjectWithIndex'], $slice, array_keys($slice));
 
-        $firstEdge = array_key_exists(0, $edges) ? $edges[0] : null;
-        $lastEdge = count($edges) > 0 ? $edges[count($edges) - 1] : null;
+        $firstEdge = $edges[0] ?? null;
+        $lastEdge = $edges !== [] ? $edges[count($edges) - 1] : null;
         $lowerBound = $after ? $afterOffset + 1 : 0;
         $upperBound = $before ? $beforeOffset : $arrayLength;
 
@@ -141,7 +136,7 @@ class ArrayConnection
         ];
     }
 
-    public static function edgeForObjectWithIndex($object, $index): array
+    public static function edgeForObjectWithIndex($object, string $index): array
     {
         return [
             'cursor' => ArrayConnection::keyToCursor($index),

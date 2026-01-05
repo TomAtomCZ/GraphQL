@@ -38,7 +38,7 @@ class TypedFragmentReference extends AbstractAst implements FragmentInterface
     /**
      * @return Field[]|Query[]
      */
-    public function getFields()
+    public function getFields(): array
     {
         return $this->fields;
     }
@@ -46,7 +46,7 @@ class TypedFragmentReference extends AbstractAst implements FragmentInterface
     /**
      * @param Field[]|Query[] $fields
      */
-    public function setFields($fields): void
+    public function setFields(array $fields): void
     {
         $this->fields = $fields;
     }

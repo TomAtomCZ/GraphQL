@@ -8,13 +8,13 @@
 namespace Youshido\GraphQL\Introspection\Field;
 
 use Youshido\GraphQL\Config\Field\FieldConfig;
+use Youshido\GraphQL\Exception\ConfigurationException;
 use Youshido\GraphQL\Execution\ResolveInfo;
 use Youshido\GraphQL\Field\AbstractField;
 use Youshido\GraphQL\Field\InputField;
 use Youshido\GraphQL\Introspection\QueryType;
 use Youshido\GraphQL\Introspection\Traits\TypeCollectorTrait;
 use Youshido\GraphQL\Type\NonNullType;
-use Youshido\GraphQL\Type\Object\AbstractObjectType;
 use Youshido\GraphQL\Type\Scalar\StringType;
 
 class TypeDefinitionField extends AbstractField
@@ -22,7 +22,7 @@ class TypeDefinitionField extends AbstractField
 
     use TypeCollectorTrait;
 
-    public function resolve($value, array $args, ResolveInfo $info)
+    public function resolve($value, array $args, ResolveInfo $info): mixed
     {
         $schema = $info->getExecutionContext()->getSchema();
         $this->collectTypes($schema->getQueryType());
@@ -41,6 +41,9 @@ class TypeDefinitionField extends AbstractField
         return null;
     }
 
+    /**
+     * @throws ConfigurationException
+     */
     public function build(FieldConfig $config): void
     {
         $config->addArgument(new InputField([
@@ -59,7 +62,7 @@ class TypeDefinitionField extends AbstractField
     }
 
     /**
-     * @return AbstractObjectType
+     * @return QueryType
      */
     public function getType(): QueryType
     {

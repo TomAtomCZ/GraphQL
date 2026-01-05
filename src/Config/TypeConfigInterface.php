@@ -14,7 +14,6 @@ interface TypeConfigInterface
 {
 
     /**
-     * @param string|Field $field
      * @param array|null $fieldInfo
      */
     public function addField(Field|string $field, array $fieldInfo = null);

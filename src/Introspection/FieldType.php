@@ -45,15 +45,11 @@ class FieldType extends AbstractObjectType
             ->addField('deprecationReason', TypeMap::TYPE_STRING)
             ->addField('type', [
                 'type' => new NonNullType(new QueryType()),
-                'resolve' => function (FieldInterface $value) {
-                    return $this->resolveType($value);
-                },
+                'resolve' => $this->resolveType(...),
             ])
             ->addField('args', [
                 'type' => new NonNullType(new ListType(new NonNullType(new InputValueType()))),
-                'resolve' => function (FieldInterface $value) {
-                    return $this->resolveArgs($value);
-                },
+                'resolve' => $this->resolveArgs(...),
             ]);
     }
 

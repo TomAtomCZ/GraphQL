@@ -23,7 +23,6 @@ class DeferredResult implements DeferredResolverInterface
     /** @var callable */
     protected $callback;
 
-    /** @var  mixed */
     public mixed $result;
 
     public function __construct(DeferredResolverInterface $resolver, callable $callback)

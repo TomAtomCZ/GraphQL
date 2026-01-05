@@ -8,6 +8,7 @@
 namespace Youshido\GraphQL\Relay\Connection;
 
 
+use Youshido\GraphQL\Exception\ConfigurationException;
 use Youshido\GraphQL\Relay\Type\PageInfoType;
 use Youshido\GraphQL\Type\AbstractType;
 use Youshido\GraphQL\Type\ListType\ListType;
@@ -44,6 +45,7 @@ class Connection
      * @param null|string $name
      * @option string  edgeFields
      *
+     * @throws ConfigurationException
      */
     public static function edgeDefinition(AbstractType $type, $name = null, array $config = []): ObjectType
     {
@@ -71,6 +73,10 @@ class Connection
      * @param null|string $name
      * @option string  connectionFields
      *
+     * @throws ConfigurationException
+     * @throws ConfigurationException
+     * @throws ConfigurationException
+     * @throws ConfigurationException
      */
     public static function connectionDefinition(AbstractType $type, $name = null, array $config = []): ObjectType
     {
@@ -102,21 +108,21 @@ class Connection
 
     public static function getTotalCount(array $value)
     {
-        return isset($value['totalCount']) ? $value['totalCount'] : -1;
+        return $value['totalCount'] ?? -1;
     }
 
     public static function getEdges(array $value)
     {
-        return isset($value['edges']) ? $value['edges'] : null;
+        return $value['edges'] ?? null;
     }
 
     public static function getPageInfo(array $value)
     {
-        return isset($value['pageInfo']) ? $value['pageInfo'] : null;
+        return $value['pageInfo'] ?? null;
     }
 
     public static function getNode(array $value)
     {
-        return isset($value['node']) ? $value['node'] : null;
+        return $value['node'] ?? null;
     }
 }

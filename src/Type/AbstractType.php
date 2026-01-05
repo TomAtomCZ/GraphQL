@@ -18,25 +18,16 @@ abstract class AbstractType implements TypeInterface
         return false;
     }
 
-    /**
-     * @return mixed
-     */
     public function getType(): mixed
     {
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
     public function getNamedType(): mixed
     {
         return $this->getType();
     }
 
-    /**
-     * @return mixed
-     */
     public function getNullableType(): mixed
     {
         return $this;

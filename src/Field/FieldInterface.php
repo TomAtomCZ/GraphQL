@@ -12,7 +12,7 @@ use Youshido\GraphQL\Execution\ResolveInfo;
 
 interface FieldInterface extends InputFieldInterface
 {
-    public function resolve($value, array $args, ResolveInfo $info);
+    public function resolve($value, array $args, ResolveInfo $info): mixed;
 
-    public function getResolveFunction();
+    public function getResolveFunction(): ?callable;
 }

@@ -9,6 +9,7 @@
 namespace Youshido\GraphQL\Relay\Field;
 
 
+use Youshido\GraphQL\Exception\ConfigurationException;
 use Youshido\GraphQL\Execution\ResolveInfo;
 use Youshido\GraphQL\Field\AbstractField;
 use Youshido\GraphQL\Relay\Node;
@@ -23,6 +24,7 @@ class GlobalIdField extends AbstractField
 
     /**
      * @param string $typeName
+     * @throws ConfigurationException
      */
     public function __construct($typeName)
     {
@@ -49,6 +51,9 @@ class GlobalIdField extends AbstractField
         return 'The ID of an object';
     }
 
+    /**
+     * @throws ConfigurationException
+     */
     public function getType(): NonNullType
     {
         return new NonNullType(new IdType());
@@ -57,7 +62,7 @@ class GlobalIdField extends AbstractField
     /**
      * @inheritdoc
      */
-    public function resolve($value, array $args, ResolveInfo $info)
+    public function resolve($value, array $args, ResolveInfo $info): ?string
     {
         return $value ? Node::toGlobalId($this->typeName, $value['id']) : null;
     }

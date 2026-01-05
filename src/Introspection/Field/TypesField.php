@@ -8,6 +8,7 @@
 namespace Youshido\GraphQL\Introspection\Field;
 
 
+use Youshido\GraphQL\Exception\ConfigurationException;
 use Youshido\GraphQL\Execution\ResolveInfo;
 use Youshido\GraphQL\Field\AbstractField;
 use Youshido\GraphQL\Introspection\QueryType;
@@ -23,6 +24,7 @@ class TypesField extends AbstractField
 
     /**
      * @return AbstractObjectType
+     * @throws ConfigurationException
      */
     public function getType(): ListType
     {

@@ -9,6 +9,7 @@ namespace Youshido\GraphQL\Execution;
 
 use Exception;
 use InvalidArgumentException;
+use Youshido\GraphQL\Exception\ConfigurationException;
 use Youshido\GraphQL\Exception\Parser\InvalidRequestException;
 use Youshido\GraphQL\Exception\Parser\SyntaxErrorException;
 use Youshido\GraphQL\Exception\ResolveException;
@@ -79,11 +80,11 @@ class Processor
         try {
             $this->parseAndCreateRequest($payload, $variables);
 
-            if (!empty($this->maxComplexity)) {
+            if ($this->maxComplexity !== null && $this->maxComplexity !== 0) {
                 $reducers[] = new MaxComplexityQueryVisitor($this->maxComplexity);
             }
 
-            if (!empty($reducers)) {
+            if ($reducers !== []) {
                 $reducer = new Reducer();
                 $reducer->reduceQuery($this->executionContext, $reducers);
             }
@@ -100,7 +101,7 @@ class Processor
             $this->data = $this->combineResults($operationResults);
 
             // If the processor found any deferred results, resolve them now.
-            if (!empty($this->data) && (!empty($this->deferredResultsLeaf) || !empty($this->deferredResultsComplex))) {
+            if ($this->data !== [] && ($this->deferredResultsLeaf !== [] || $this->deferredResultsComplex !== [])) {
                 try {
                     while ($deferredResolver = array_shift($this->deferredResultsComplex)) {
                         $deferredResolver->resolve();
@@ -151,6 +152,7 @@ class Processor
 
     /**
      * @throws ResolveException
+     * @throws ConfigurationException
      */
     protected function resolveQuery(AstQuery $query): array
     {
@@ -161,7 +163,7 @@ class Processor
             'type' => $type
         ]);
 
-        if (self::TYPE_NAME_QUERY == $query->getName()) {
+        if (self::TYPE_NAME_QUERY === $query->getName()) {
             return [$this->getAlias($query) => $type->getName()];
         }
 
@@ -181,7 +183,7 @@ class Processor
             $type = $field->getType();
             $nonNullType = $type->getNullableType();
 
-            if (self::TYPE_NAME_QUERY == $ast->getName()) {
+            if (self::TYPE_NAME_QUERY === $ast->getName()) {
                 return $nonNullType->getName();
             }
 
@@ -337,11 +339,7 @@ class Processor
 
 
     /**
-     * @param FieldInterface $field
-     * @param AbstractObjectType $type
-     * @param Fragment|AstFieldInterface|TypedFragmentReference $ast
      * @param $resolvedValue
-     * @return array
      * @throws ResolveException
      */
     private function collectResult(FieldInterface $field, AbstractObjectType $type, Fragment|AstFieldInterface|TypedFragmentReference $ast, $resolvedValue): array
@@ -427,10 +425,7 @@ class Processor
     }
 
     /**
-     * @param FieldInterface $field
-     * @param AstFieldInterface $ast
      * @param $parentValue
-     * @return mixed
      * @throws ResolveException
      */
     protected function resolveScalar(FieldInterface $field, AstFieldInterface $ast, $parentValue): mixed
@@ -447,11 +442,9 @@ class Processor
     }
 
     /**
-     * @param FieldInterface $field
-     * @param AstFieldInterface $ast
      * @param $parentValue
-     * @return mixed
      * @throws ResolveException
+     * @throws ConfigurationException
      */
     protected function resolveList(FieldInterface $field, AstFieldInterface $ast, $parentValue): mixed
     {
@@ -487,28 +480,12 @@ class Processor
                         return $resolvedValueItem;
                     });
 
-                    switch ($itemType->getNullableType()->getKind()) {
-                        case TypeMap::KIND_ENUM:
-                        case TypeMap::KIND_SCALAR:
-                            $value = $this->resolveScalar($fakeField, $fakeAst, $resolvedValueItem);
-
-                            break;
-
-
-                        case TypeMap::KIND_OBJECT:
-                            $value = $this->resolveObject($fakeField, $fakeAst, $resolvedValueItem);
-
-                            break;
-
-                        case TypeMap::KIND_UNION:
-                        case TypeMap::KIND_INTERFACE:
-                            $value = $this->resolveComposite($fakeField, $fakeAst, $resolvedValueItem);
-
-                            break;
-
-                        default:
-                            $value = null;
-                    }
+                    $value = match ($itemType->getNullableType()->getKind()) {
+                        TypeMap::KIND_ENUM, TypeMap::KIND_SCALAR => $this->resolveScalar($fakeField, $fakeAst, $resolvedValueItem),
+                        TypeMap::KIND_OBJECT => $this->resolveObject($fakeField, $fakeAst, $resolvedValueItem),
+                        TypeMap::KIND_UNION, TypeMap::KIND_INTERFACE => $this->resolveComposite($fakeField, $fakeAst, $resolvedValueItem),
+                        default => null,
+                    };
                 } catch (Exception $e) {
                     $this->executionContext->addError($e);
 
@@ -523,11 +500,7 @@ class Processor
     }
 
     /**
-     * @param FieldInterface $field
-     * @param AstFieldInterface $ast
      * @param $parentValue
-     * @param bool $fromUnion
-     * @return mixed
      * @throws ResolveException
      */
     protected function resolveObject(FieldInterface $field, AstFieldInterface $ast, $parentValue, bool $fromUnion = false): mixed
@@ -537,7 +510,7 @@ class Processor
             $resolvedValue = $this->doResolve($field, $ast, $parentValue);
         }
 
-        return $this->deferredResolve($resolvedValue, $field, function ($resolvedValue) use ($field, $ast) {
+        return $this->deferredResolve($resolvedValue, $field, function ($resolvedValue) use ($field, $ast): ?array {
             $this->resolveValidator->assertValidResolvedValueForField($field, $resolvedValue);
 
             if (null === $resolvedValue) {
@@ -549,18 +522,16 @@ class Processor
 
             try {
                 return $this->collectResult($field, $type, $ast, $resolvedValue);
-            } catch (Exception $exception) {
+            } catch (Exception) {
                 return null;
             }
         });
     }
 
     /**
-     * @param FieldInterface $field
-     * @param AstFieldInterface $ast
      * @param $parentValue
-     * @return mixed
      * @throws ResolveException
+     * @throws ConfigurationException
      */
     protected function resolveComposite(FieldInterface $field, AstFieldInterface $ast, $parentValue): mixed
     {
@@ -575,12 +546,7 @@ class Processor
 
             /** @var AbstractUnionType $type */
             $type = $field->getType()->getNullableType();
-            $resolveInfo = new ResolveInfo(
-                $field,
-                $ast instanceof AstQuery ? $ast->getFields() : [],
-                $this->executionContext
-            );
-            $resolvedType = $type->resolveType($resolvedValue, $resolveInfo);
+            $resolvedType = $type->resolveType($resolvedValue);
 
             if (!$resolvedType) {
                 throw new ResolveException('Resolving function must return type');
@@ -655,7 +621,7 @@ class Processor
         return array_merge($values, $defaults);
     }
 
-    private function getAlias(AstFieldInterface $ast): ?string
+    private function getAlias(AstFieldInterface $ast): string
     {
         return $ast->getAlias() ?: $ast->getName();
     }
@@ -670,8 +636,8 @@ class Processor
      */
     protected function combineResults(array $results): array
     {
-        if (count($results) > 0) {
-            return call_user_func_array('array_replace_recursive', $results);
+        if ($results !== []) {
+            return array_replace_recursive(...$results);
         }
 
         return [];
@@ -679,8 +645,6 @@ class Processor
 
     /**
      * You can access ExecutionContext to check errors and inject dependencies
-     *
-     * @return ExecutionContext
      */
     public function getExecutionContext(): ExecutionContext
     {
@@ -691,7 +655,7 @@ class Processor
     {
         $result = [];
 
-        if (!empty($this->data)) {
+        if ($this->data !== []) {
             $result['data'] = $this->data;
         }
 
@@ -702,17 +666,11 @@ class Processor
         return $result;
     }
 
-    /**
-     * @return int|null
-     */
     public function getMaxComplexity(): ?int
     {
         return $this->maxComplexity;
     }
 
-    /**
-     * @param int|null $maxComplexity
-     */
     public function setMaxComplexity(?int $maxComplexity): void
     {
         $this->maxComplexity = $maxComplexity;

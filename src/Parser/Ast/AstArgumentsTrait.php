@@ -36,11 +36,6 @@ trait AstArgumentsTrait
         return $this->arguments;
     }
 
-    /**
-     * @param string $name
-     *
-     * @return null|Argument
-     */
     public function getArgument(string $name): ?Argument
     {
         $argument = null;

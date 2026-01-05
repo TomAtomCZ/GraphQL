@@ -37,12 +37,11 @@ abstract class AbstractInterfaceType extends AbstractType
     /**
      * ObjectType constructor.
      *
-     * @param array $config
      * @throws ConfigurationException
      */
     public function __construct(array $config = [])
     {
-        if (empty($config)) {
+        if ($config === []) {
             $config['name'] = $this->getName();
         }
 
@@ -51,9 +50,6 @@ abstract class AbstractInterfaceType extends AbstractType
 
     abstract public function resolveType($object);
 
-    /**
-     * @param InterfaceTypeConfig $config
-     */
     abstract public function build(InterfaceTypeConfig $config);
 
     public function getKind(): string

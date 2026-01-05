@@ -10,6 +10,7 @@ namespace Youshido\GraphQL\Relay\Type;
 
 
 use Youshido\GraphQL\Config\Object\ObjectTypeConfig;
+use Youshido\GraphQL\Exception\ConfigurationException;
 use Youshido\GraphQL\Type\NonNullType;
 use Youshido\GraphQL\Type\Object\AbstractObjectType;
 use Youshido\GraphQL\Type\Scalar\BooleanType;
@@ -17,6 +18,9 @@ use Youshido\GraphQL\Type\Scalar\StringType;
 
 class PageInfoType extends AbstractObjectType
 {
+    /**
+     * @throws ConfigurationException
+     */
     public function build(ObjectTypeConfig $config): void
     {
         $config->addFields([

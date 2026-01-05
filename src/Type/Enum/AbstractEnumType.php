@@ -23,12 +23,11 @@ abstract class AbstractEnumType extends AbstractType
 
     /**
      * ObjectType constructor.
-     * @param array $config
      * @throws ConfigurationException
      */
     public function __construct(array $config = [])
     {
-        if (empty($config)) {
+        if ($config === []) {
             $config['name'] = $this->getName();
             $config['values'] = $this->getValues();
         }
@@ -49,7 +48,9 @@ abstract class AbstractEnumType extends AbstractType
      */
     public function isValidValue(mixed $value): bool
     {
-        if (is_null($value)) return true;
+        if (is_null($value)) {
+            return true;
+        }
 
         foreach ($this->getConfig()->get('values') as $item) {
             if ($value === $item['name'] || $value === $item['value']) {
@@ -68,9 +69,6 @@ abstract class AbstractEnumType extends AbstractType
         return sprintf('Value must be one of the allowed ones: %s', implode(', ', $allowedValues));
     }
 
-    /**
-     * @return array
-     */
     abstract public function getValues(): array;
 
     public function serialize($value): mixed

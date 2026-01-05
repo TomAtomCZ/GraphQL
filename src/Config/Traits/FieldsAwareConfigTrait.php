@@ -47,7 +47,6 @@ trait FieldsAwareConfigTrait
     }
 
     /**
-     * @param array $fieldsList
      * @return $this
      * @throws ConfigurationException
      */
@@ -106,8 +105,6 @@ trait FieldsAwareConfigTrait
 
     /**
      * @param $name
-     *
-     * @return mixed
      */
     public function getField($name): mixed
     {
@@ -116,7 +113,6 @@ trait FieldsAwareConfigTrait
 
     /**
      * @param $name
-     * @return bool
      */
     public function hasField($name): bool
     {

@@ -32,11 +32,6 @@ abstract class AbstractListType extends AbstractObjectType implements CompositeT
 
     abstract public function getItemType(): mixed;
 
-    /**
-     * @param mixed $value
-     *
-     * @return bool
-     */
     public function isValidValue(mixed $value): bool
     {
         if (!$this->isIterable($value)) {
@@ -48,7 +43,6 @@ abstract class AbstractListType extends AbstractObjectType implements CompositeT
 
     /**
      * @param $value
-     * @param bool $returnValue
      * @return mixed - true/false or type of the returned value if $returnValue is true
      */
     protected function validList($value, bool $returnValue = false): mixed
@@ -124,7 +118,6 @@ abstract class AbstractListType extends AbstractObjectType implements CompositeT
 
     /**
      * @param $value
-     * @return bool
      */
     protected function isIterable($value): bool
     {

@@ -103,7 +103,7 @@ class Token
         }
     }
 
-    public static function tokenName($tokenType): string
+    public static function tokenName(string $tokenType): string
     {
         return [
             self::TYPE_END => 'END',

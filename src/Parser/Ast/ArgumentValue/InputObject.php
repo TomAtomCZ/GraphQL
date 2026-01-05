@@ -24,10 +24,7 @@ class InputObject extends AbstractAst implements ValueInterface
         $this->object = $object;
     }
 
-    /**
-     * @return array
-     */
-    public function getValue()
+    public function getValue(): array
     {
         return $this->object;
     }

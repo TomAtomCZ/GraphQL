@@ -57,7 +57,7 @@ class TypeValidationRule implements ValidationRuleInterface
 
     private function isArrayOfObjectTypes($data): bool
     {
-        if (!is_array($data) || !count($data)) {
+        if (!is_array($data) || $data === []) {
             return false;
         }
 
@@ -72,7 +72,7 @@ class TypeValidationRule implements ValidationRuleInterface
 
     private function isEnumValues($data): bool
     {
-        if (!is_array($data) || empty($data)) {
+        if (!is_array($data) || $data === []) {
             return false;
         }
 
@@ -91,7 +91,9 @@ class TypeValidationRule implements ValidationRuleInterface
 
     private function isArrayOfInterfaces($data): bool
     {
-        if (!is_array($data)) return false;
+        if (!is_array($data)) {
+            return false;
+        }
 
         foreach ($data as $item) {
             if (!TypeService::isInterface($item)) {
@@ -104,12 +106,14 @@ class TypeValidationRule implements ValidationRuleInterface
 
     private function isArrayOfFields($data): bool
     {
-        if (!is_array($data) || empty($data)) {
+        if (!is_array($data) || $data === []) {
             return false;
         }
 
         foreach ($data as $name => $item) {
-            if (!$this->isField($item, $name)) return false;
+            if (!$this->isField($item, $name)) {
+                return false;
+            }
         }
 
         return true;
@@ -141,16 +145,20 @@ class TypeValidationRule implements ValidationRuleInterface
 
     private function isArrayOfInputFields($data): bool
     {
-        if (!is_array($data)) return false;
+        if (!is_array($data)) {
+            return false;
+        }
 
         foreach ($data as $item) {
-            if (!$this->isInputField($item)) return false;
+            if (!$this->isInputField($item)) {
+                return false;
+            }
         }
 
         return true;
     }
 
-    private function isInputField($data): bool
+    private function isInputField(array $data): bool
     {
         if (is_object($data)) {
             if ($data instanceof InputFieldInterface) {

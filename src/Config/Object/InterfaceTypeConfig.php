@@ -36,11 +36,17 @@ class InterfaceTypeConfig extends AbstractConfig implements TypeConfigInterface
         ];
     }
 
+    /**
+     * @throws ConfigurationException
+     */
     protected function build()
     {
         $this->buildFields();
     }
 
+    /**
+     * @throws ConfigurationException
+     */
     public function resolveType($object)
     {
         $callable = $this->get('resolveType');

@@ -121,7 +121,6 @@ class TypeService
 
     /**
      * @param mixed|AbstractType $type
-     * @return bool
      */
     public static function isInputType(mixed $type): bool
     {
@@ -143,8 +142,6 @@ class TypeService
     }
 
     /**
-     * @param object|array $data
-     * @param string $path
      * @param bool $enableMagicCall whether to attempt to resolve properties using __call()
      *
      * @return mixed|null

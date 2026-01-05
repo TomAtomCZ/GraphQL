@@ -34,33 +34,21 @@ class Field extends AbstractAst implements FieldInterface
         $this->setDirectives($directives);
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     */
     public function setName(string $name): void
     {
         $this->name = $name;
     }
 
-    /**
-     * @return string|null
-     */
     public function getAlias(): ?string
     {
         return $this->alias;
     }
 
-    /**
-     * @param string|null $alias
-     */
     public function setAlias(?string $alias): void
     {
         $this->alias = $alias;

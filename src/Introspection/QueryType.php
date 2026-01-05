@@ -98,7 +98,7 @@ class QueryType extends AbstractObjectType
         }
 
         /** @var AbstractObjectType $value */
-        return array_filter($value->getConfig()->getFields(), static function ($field) use ($args): bool {
+        return array_filter($value->getConfig()->getFields(), static function (Field $field) use ($args): bool {
             /** @var $field Field */
             return !in_array($field->getName(), ['__type', '__schema']) && !(!$args['includeDeprecated'] && $field->isDeprecated());
         });
@@ -167,16 +167,12 @@ class QueryType extends AbstractObjectType
             ->addField('description', TypeMap::TYPE_STRING)
             ->addField('ofType', [
                 'type' => new QueryType(),
-                'resolve' => function (AbstractType $value) {
-                    return $this->resolveOfType($value);
-                }
+                'resolve' => $this->resolveOfType(...)
             ])
             ->addField(new Field([
                 'name' => 'inputFields',
                 'type' => new ListType(new NonNullType(new InputValueType())),
-                'resolve' => function ($value) {
-                    return $this->resolveInputFields($value);
-                }
+                'resolve' => $this->resolveInputFields(...)
             ]))
             ->addField(new Field([
                 'name' => 'enumValues',
@@ -187,7 +183,7 @@ class QueryType extends AbstractObjectType
                     ]
                 ],
                 'type' => new ListType(new NonNullType(new EnumValueType())),
-                'resolve' => function ($value, $args) {
+                'resolve' => function ($value, array $args): ?array {
                     return $this->resolveEnumValues($value, $args);
                 }
             ]))
@@ -200,20 +196,18 @@ class QueryType extends AbstractObjectType
                     ]
                 ],
                 'type' => new ListType(new NonNullType(new FieldType())),
-                'resolve' => function ($value, $args) {
+                'resolve' => function ($value, $args): ?array {
                     return $this->resolveFields($value, $args);
                 }
             ]))
             ->addField(new Field([
                 'name' => 'interfaces',
                 'type' => new ListType(new NonNullType(new QueryType())),
-                'resolve' => function ($value) {
-                    return $this->resolveInterfaces($value);
-                }
+                'resolve' => $this->resolveInterfaces(...)
             ]))
             ->addField('possibleTypes', [
                 'type' => new ListType(new NonNullType(new QueryType())),
-                'resolve' => function ($value, $args, ResolveInfo $info) {
+                'resolve' => function ($value, $args, ResolveInfo $info): ?array {
                     return $this->resolvePossibleTypes($value, $args, $info);
                 }
             ]);

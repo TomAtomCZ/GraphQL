@@ -19,18 +19,12 @@ use Youshido\GraphQL\Type\TypeMap;
 
 class InputValueType extends AbstractObjectType
 {
-    /**
-     * @param InputField|AbstractSchema|Field $value
-     * @return TypeInterface
-     */
     public function resolveType(InputField|AbstractSchema|Field $value): TypeInterface
     {
         return $value->getConfig()->getType();
     }
 
     /**
-     * @param AbstractSchema|Field|InputField $value
-     *
      * @return string|array|null
      *
      * //todo implement value printer
@@ -54,15 +48,11 @@ class InputValueType extends AbstractObjectType
             ->addField(new Field([
                 'name' => 'type',
                 'type' => new NonNullType(new QueryType()),
-                'resolve' => function (AbstractSchema|Field|InputField $value): TypeInterface {
-                    return $this->resolveType($value);
-                }
+                'resolve' => $this->resolveType(...)
             ]))
             ->addField('defaultValue', [
                 'type' => TypeMap::TYPE_STRING,
-                'resolve' => function (AbstractSchema|Field|InputField $value): ?string {
-                    return $this->resolveDefaultValue($value);
-                }
+                'resolve' => $this->resolveDefaultValue(...)
             ]);
     }
 

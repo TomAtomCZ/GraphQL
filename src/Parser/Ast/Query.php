@@ -56,9 +56,6 @@ class Query extends AbstractAst implements FieldInterface
         return array_values($this->fields);
     }
 
-    /**
-     * @return bool
-     */
     public function hasFields(): bool
     {
         return (bool)count($this->fields);

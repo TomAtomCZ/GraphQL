@@ -39,18 +39,12 @@ class Fragment extends AbstractAst
         $this->setDirectives($directives);
     }
 
-    /**
-     * @return boolean
-     */
-    public function isUsed()
+    public function isUsed(): bool
     {
         return $this->used;
     }
 
-    /**
-     * @param boolean $used
-     */
-    public function setUsed($used): void
+    public function setUsed(bool $used): void
     {
         $this->used = $used;
     }
@@ -90,7 +84,7 @@ class Fragment extends AbstractAst
     /**
      * @return Field[]|Query[]
      */
-    public function getFields()
+    public function getFields(): array
     {
         return $this->fields;
     }
@@ -98,7 +92,7 @@ class Fragment extends AbstractAst
     /**
      * @param Field[]|Query[] $fields
      */
-    public function setFields($fields): void
+    public function setFields(array $fields): void
     {
         $this->fields = $fields;
     }

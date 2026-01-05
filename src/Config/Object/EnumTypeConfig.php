@@ -29,7 +29,7 @@ class EnumTypeConfig extends AbstractConfig implements TypeConfigInterface
         ];
     }
 
-    public function getValues()
+    public function getValues(): mixed
     {
         return $this->get('values', []);
     }

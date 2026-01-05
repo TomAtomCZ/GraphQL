@@ -32,12 +32,11 @@ abstract class AbstractUnionType extends AbstractType implements AbstractInterfa
 
     /**
      * ObjectType constructor.
-     * @param array $config
      * @throws ConfigurationException
      */
     public function __construct(array $config = [])
     {
-        if (empty($config)) {
+        if ($config === []) {
             $config['name'] = $this->getName();
             $config['types'] = $this->getTypes();
         }

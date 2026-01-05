@@ -9,8 +9,7 @@ namespace Youshido\GraphQL\Field;
 
 use Youshido\GraphQL\Config\Field\FieldConfig;
 use Youshido\GraphQL\Config\Traits\ResolvableObjectTrait;
-use Youshido\GraphQL\Type\AbstractType;
-use Youshido\GraphQL\Type\Object\AbstractObjectType;
+use Youshido\GraphQL\Exception\ConfigurationException;
 use Youshido\GraphQL\Type\Traits\AutoNameTrait;
 use Youshido\GraphQL\Type\Traits\FieldsArgumentsAwareObjectTrait;
 use Youshido\GraphQL\Type\TypeFactory;
@@ -18,17 +17,19 @@ use Youshido\GraphQL\Type\TypeService;
 
 abstract class AbstractField implements FieldInterface
 {
-
     use FieldsArgumentsAwareObjectTrait;
     use ResolvableObjectTrait;
     use AutoNameTrait {
         getName as getAutoName;
     }
 
-    protected $isFinal = false;
+    protected bool $isFinal = false;
 
-    private $nameCache;
+    private mixed $nameCache;
 
+    /**
+     * @throws ConfigurationException
+     */
     public function __construct(array $config = [])
     {
         if (empty($config['type'])) {
@@ -43,15 +44,12 @@ abstract class AbstractField implements FieldInterface
             $config['type'] = TypeFactory::getScalarType($config['type']);
         }
 
-        $this->nameCache = isset($config['name']) ? $config['name'] : $this->getAutoName();
+        $this->nameCache = $config['name'] ?? $this->getAutoName();
 
         $this->config = new FieldConfig($config, $this, $this->isFinal);
         $this->build($this->config);
     }
 
-    /**
-     * @return mixed
-     */
     abstract public function getType(): mixed;
 
     public function build(FieldConfig $config): void

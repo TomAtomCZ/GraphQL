@@ -51,10 +51,6 @@ trait ErrorContainerTrait
         return $this;
     }
 
-    /**
-     * @param bool $inGraphQLStyle
-     * @return array
-     */
     public function getErrorsArray(bool $inGraphQLStyle = true): array
     {
         $errors = [];

@@ -45,12 +45,11 @@ abstract class AbstractObjectType extends AbstractType
 
     /**
      * ObjectType constructor.
-     * @param array $config
      * @throws ConfigurationException
      */
     public function __construct(array $config = [])
     {
-        if (empty($config)) {
+        if ($config === []) {
             $config['name'] = $this->getName();
             $config['interfaces'] = $this->getInterfaces();
         }
@@ -78,9 +77,6 @@ abstract class AbstractObjectType extends AbstractType
         return $this;
     }
 
-    /**
-     * @param ObjectTypeConfig $config
-     */
     abstract public function build(ObjectTypeConfig $config);
 
     /**

@@ -12,6 +12,7 @@ namespace Youshido\GraphQL\Type\InputObject;
 use Exception;
 use Youshido\GraphQL\Config\AbstractConfig;
 use Youshido\GraphQL\Config\Object\InputObjectTypeConfig;
+use Youshido\GraphQL\Exception\ConfigurationException;
 use Youshido\GraphQL\Field\InputFieldInterface;
 use Youshido\GraphQL\Parser\Ast\ArgumentValue\InputObject;
 use Youshido\GraphQL\Parser\Ast\ArgumentValue\Variable;
@@ -38,6 +39,9 @@ abstract class AbstractInputObjectType extends AbstractType
         return $this->config;
     }
 
+    /**
+     * @throws ConfigurationException
+     */
     public function __construct($config = [])
     {
         if (empty($config)) {
@@ -91,7 +95,7 @@ abstract class AbstractInputObjectType extends AbstractType
             }
         }
 
-        if (count($requiredFields) > 0) {
+        if ($requiredFields !== []) {
             $this->lastValidationError = sprintf('%s %s required on %s', implode(', ', array_keys($requiredFields)), count($requiredFields) > 1 ? 'are' : 'is', $typeConfig->getName());
         }
 
@@ -108,9 +112,14 @@ abstract class AbstractInputObjectType extends AbstractType
         return true;
     }
 
+    /**
+     * @throws Exception
+     */
     public function parseValue($value): mixed
     {
-        if (is_null($value)) return null;
+        if (is_null($value)) {
+            return null;
+        }
 
         if ($value instanceof InputObject) {
             $value = $value->getValue();

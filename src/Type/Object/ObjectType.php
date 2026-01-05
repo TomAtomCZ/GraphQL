@@ -32,7 +32,7 @@ final class ObjectType extends AbstractObjectType
     {
     }
 
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->getConfigValue('name');
     }

@@ -68,12 +68,12 @@ abstract class AbstractObjectType extends AbstractType
         return TypeMap::KIND_OBJECT;
     }
 
-    public function getType(): NonNullType|AbstractObjectType|AbstractScalarType|AbstractInterfaceType|AbstractEnumType|AbstractInputObjectType|null|static
+    public function getType(): mixed
     {
         return $this->getConfigValue('type', $this);
     }
 
-    public function getNamedType(): NonNullType|AbstractObjectType|AbstractScalarType|AbstractInterfaceType|AbstractEnumType|AbstractInputObjectType|null|static
+    public function getNamedType(): mixed
     {
         return $this;
     }

@@ -26,7 +26,7 @@ final class ListType extends AbstractListType
         $this->config = new ListTypeConfig(['itemType' => $itemType], $this, true);
     }
 
-    public function getItemType(): AbstractObjectType|AbstractScalarType|AbstractInterfaceType|AbstractEnumType|AbstractInputObjectType|NonNullType|null
+    public function getItemType(): mixed
     {
         return $this->getConfig()->get('itemType');
     }

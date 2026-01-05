@@ -51,11 +51,15 @@ class ArrayConnection
     /**
      * Converts a cursor to its array key.
      *
-     * @param string $cursor
+     * @param string|null $cursor
      * @return string|null
      */
-    public static function cursorToKey(string $cursor): ?string
+    public static function cursorToKey(?string $cursor): ?string
     {
+        if ($cursor === null) {
+            return null;
+        }
+
         if ($decoded = base64_decode($cursor)) {
             return substr($decoded, strlen(self::PREFIX));
         }
@@ -74,7 +78,7 @@ class ArrayConnection
      *   The array to use in counting the offset. If empty, assumed to be an indexed array.
      * @return int|null
      */
-    public static function cursorToOffsetWithDefault($cursor, $default, array $array = []): ?int
+    public static function cursorToOffsetWithDefault(mixed $cursor, mixed $default, array $array = []): ?int
     {
         if (!is_string($cursor)) {
             return $default;

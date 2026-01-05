@@ -14,6 +14,7 @@ use Youshido\GraphQL\Exception\Parser\SyntaxErrorException;
 use Youshido\GraphQL\Exception\ResolveException;
 use Youshido\GraphQL\Execution\Container\Container;
 use Youshido\GraphQL\Execution\Context\ExecutionContext;
+use Youshido\GraphQL\Execution\Context\ExecutionContextInterface;
 use Youshido\GraphQL\Execution\Visitor\MaxComplexityQueryVisitor;
 use Youshido\GraphQL\Field\Field;
 use Youshido\GraphQL\Field\FieldInterface;
@@ -42,15 +43,16 @@ use Youshido\GraphQL\Type\TypeMap;
 use Youshido\GraphQL\Type\Union\AbstractUnionType;
 use Youshido\GraphQL\Validator\RequestValidator\RequestValidator;
 use Youshido\GraphQL\Validator\ResolveValidator\ResolveValidator;
+use Youshido\GraphQL\Validator\ResolveValidator\ResolveValidatorInterface;
 
 class Processor
 {
 
     final const TYPE_NAME_QUERY = '__typename';
 
-    protected ExecutionContext $executionContext;
+    protected ExecutionContextInterface $executionContext;
 
-    protected ResolveValidator $resolveValidator;
+    protected ResolveValidatorInterface $resolveValidator;
 
     protected array $data = [];
 

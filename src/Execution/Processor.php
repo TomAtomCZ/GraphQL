@@ -586,7 +586,7 @@ class Processor
         $this->executionContext->setRequest($request);
     }
 
-    protected function doResolve(FieldInterface $field, AstFieldInterface $ast, $parentValue = null)
+    protected function doResolve(FieldInterface $field, AstFieldInterface $ast, $parentValue = null): mixed
     {
         /** @var AstQuery|AstField $ast */
         $arguments = $this->parseArgumentsValues($field, $ast);

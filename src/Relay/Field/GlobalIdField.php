@@ -33,7 +33,7 @@ class GlobalIdField extends AbstractField
         $config = [
             'type' => $this->getType(),
             'name' => $this->getName(),
-            'resolve' => function ($value, array $args, ResolveInfo $info) {
+            'resolve' => function ($value, array $args, ResolveInfo $info): ?string {
                 return $this->resolve($value, $args, $info);
             }
         ];

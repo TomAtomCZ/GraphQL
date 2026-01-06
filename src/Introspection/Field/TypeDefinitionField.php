@@ -61,9 +61,6 @@ class TypeDefinitionField extends AbstractField
         return '__type';
     }
 
-    /**
-     * @return QueryType
-     */
     public function getType(): QueryType
     {
         return new QueryType();

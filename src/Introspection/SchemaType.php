@@ -43,7 +43,7 @@ class SchemaType extends AbstractObjectType
         return null;
     }
 
-    public function resolveDirectives($value)
+    public function resolveDirectives($value): array
     {
         /** @var AbstractSchema|Field $value */
         return $value->getDirectiveList()->getDirectives();

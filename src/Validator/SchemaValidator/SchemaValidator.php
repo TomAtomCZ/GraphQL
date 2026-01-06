@@ -27,7 +27,6 @@ class SchemaValidator
             throw new ConfigurationException('Schema has to have fields');
         }
 
-        $configValidator = null;
         $configValidator = ConfigValidator::getInstance();
 
         foreach ($schema->getQueryType()->getConfig()->getFields() as $field) {
@@ -42,7 +41,7 @@ class SchemaValidator
     /**
      * @throws ConfigurationException
      */
-    protected function assertInterfaceImplementationCorrect(AbstractObjectType $type)
+    protected function assertInterfaceImplementationCorrect(AbstractObjectType $type): void
     {
         if (!$type->getInterfaces()) {
             return;
@@ -61,7 +60,7 @@ class SchemaValidator
      *
      * @throws ConfigurationException
      */
-    protected function assertFieldsIdentical($intField, $objField, AbstractInterfaceType $interface)
+    protected function assertFieldsIdentical($intField, $objField, AbstractInterfaceType $interface): void
     {
         $isValid = true;
         if ($intField->getType()->isCompositeType() !== $objField->getType()->isCompositeType()) {

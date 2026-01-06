@@ -13,16 +13,16 @@ class Tokenizer
 {
     protected $source;
 
-    protected $pos = 0;
+    protected int $pos = 0;
 
-    protected $line = 1;
+    protected int $line = 1;
 
-    protected $lineStart = 0;
+    protected int $lineStart = 0;
 
     /** @var  Token */
-    protected $lookAhead;
+    protected Token $lookAhead;
 
-    protected function initTokenizer($source)
+    protected function initTokenizer($source): void
     {
         $this->source = $source;
         $this->lookAhead = $this->next();
@@ -32,14 +32,14 @@ class Tokenizer
      * @return Token
      * @throws SyntaxErrorException
      */
-    protected function next()
+    protected function next(): Token
     {
         $this->skipWhitespace();
 
         return $this->scan();
     }
 
-    protected function skipWhitespace()
+    protected function skipWhitespace(): void
     {
         while ($this->pos < strlen((string)$this->source)) {
             $ch = $this->source[$this->pos];
@@ -77,7 +77,7 @@ class Tokenizer
      *
      * @throws SyntaxErrorException
      */
-    protected function scan()
+    protected function scan(): Token
     {
         if ($this->pos >= strlen((string)$this->source)) {
             return new Token(Token::TYPE_END, $this->getLine(), $this->getColumn());
@@ -217,7 +217,7 @@ class Tokenizer
     /**
      * @throws SyntaxErrorException
      */
-    protected function expect($type)
+    protected function expect($type): Token
     {
         if ($this->match($type)) {
             return $this->lex();
@@ -247,12 +247,12 @@ class Tokenizer
 
         $value = substr((string)$this->source, $start, $this->pos - $start);
 
-        $value = !str_contains($value, '.') ? (int)$value : (float)$value;
+        $value = str_contains($value, '.') ? (float)$value : (int)$value;
 
         return new Token(Token::TYPE_NUMBER, $this->getLine(), $this->getColumn(), $value);
     }
 
-    protected function skipInteger()
+    protected function skipInteger(): void
     {
         while ($this->pos < strlen((string)$this->source)) {
             $ch = $this->source[$this->pos];
@@ -279,7 +279,7 @@ class Tokenizer
         return $this->pos - $this->lineStart;
     }
 
-    protected function getLine()
+    protected function getLine(): int
     {
         return $this->line;
     }
@@ -290,7 +290,7 @@ class Tokenizer
     /**
      * @throws SyntaxErrorException
      */
-    protected function scanString()
+    protected function scanString(): Token
     {
         $len = strlen((string)$this->source);
         ++$this->pos;
@@ -352,12 +352,15 @@ class Tokenizer
         return $this->lookAhead->getType() === Token::TYPE_END;
     }
 
-    protected function peek()
+    protected function peek(): Token
     {
         return $this->lookAhead;
     }
 
-    protected function lex()
+    /**
+     * @throws SyntaxErrorException
+     */
+    protected function lex(): Token
     {
         $prev = $this->lookAhead;
         $this->lookAhead = $this->next();
@@ -365,12 +368,12 @@ class Tokenizer
         return $prev;
     }
 
-    protected function createUnexpectedException(Token $token)
+    protected function createUnexpectedException(Token $token): SyntaxErrorException
     {
         return $this->createUnexpectedTokenTypeException($token->getType());
     }
 
-    protected function createUnexpectedTokenTypeException(string $tokenType)
+    protected function createUnexpectedTokenTypeException(string $tokenType): SyntaxErrorException
     {
         return $this->createException(sprintf('Unexpected token "%s"', Token::tokenName($tokenType)));
     }

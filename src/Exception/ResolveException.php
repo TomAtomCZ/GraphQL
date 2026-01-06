@@ -17,7 +17,7 @@ class ResolveException extends Exception implements LocationableExceptionInterfa
 
     private readonly ?Location $location;
 
-    public function __construct($message, Location $location = null)
+    public function __construct($message, ?Location $location = null)
     {
         parent::__construct($message);
 
@@ -26,7 +26,7 @@ class ResolveException extends Exception implements LocationableExceptionInterfa
 
 
     /**
-     * @return Location
+     * @return Location|null
      */
     public function getLocation(): ?Location
     {

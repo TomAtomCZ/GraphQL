@@ -23,6 +23,7 @@ class ArrayConnection
 
     /**
      * @param $offset int
+     * @return string
      * @deprecated
      *   Use keyToCursor instead.
      */
@@ -39,6 +40,7 @@ class ArrayConnection
     /**
      * @param $cursor string
      *
+     * @return int|string|null
      * @deprecated Use cursorToKey instead.
      */
     public static function cursorToOffset(string $cursor): int|string|null
@@ -54,6 +56,7 @@ class ArrayConnection
         if ($cursor === null) {
             return null;
         }
+
         $decoded = base64_decode($cursor);
 
         if ($decoded !== '' && $decoded !== '0') {
